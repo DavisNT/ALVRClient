@@ -173,6 +173,12 @@ class UdpReceiverThread extends ThreadBase
     // We should send all broadcast address to use USB tethering or VPN.
     private String[] getBroadcastAddressList()
     {
+        if (PersistentConfig.sTargetServers != null && PersistentConfig.sTargetServers.length() > 6) {
+            String[] addrs = PersistentConfig.sTargetServers.split("[^0-9.]+");
+            Utils.logi(TAG, () -> addrs.length + " target server IP addresses were found in config setting " + PersistentConfig.KEY_TARGET_SERVERS + " value: " + PersistentConfig.sTargetServers);
+            return addrs;
+        }
+
         List<String> ret = new ArrayList<>();
         try {
             Enumeration<NetworkInterface> networkInterfaces = NetworkInterface.getNetworkInterfaces();
